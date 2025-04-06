@@ -1,0 +1,93 @@
+// https://www.lanqiao.cn/problems/162/learning/?page=1&first_category_id=1&name=%E9%80%9A%E7%94%B5
+
+#include <climits>
+#include <cmath>
+#include <iostream>
+using namespace std;
+#define edgetype float
+#define maxn 2021
+#define MAX_VALUE 10000000
+
+void initgraph(edgetype graph[][maxn], int n) {
+    for (int i = 0; i < maxn; ++i) {
+        for (int j = i; j < maxn; ++j) {
+            graph[i][j] = MAX_VALUE;
+            graph[j][i] = MAX_VALUE;
+        }
+    }
+}
+
+void addedge(edgetype graph[][maxn], int u, int v, edgetype w) {
+    if (graph[u][v] > w) {
+        graph[u][v] = w;
+    }
+};
+
+edgetype prim(edgetype graph[][maxn], int n) {
+    edgetype dist[maxn];
+    bool visited[maxn] = { false };
+    // 坑 一定要初始化
+    for (int i = 0; i < n; ++i) {
+        dist[i] = MAX_VALUE;
+    }
+
+    dist[0] = 0;
+
+    edgetype ans = 0;
+    while (true) {
+        int minidx = -1;
+        int min = MAX_VALUE;
+        for (int i = 0; i < n; ++i) {
+            if (!visited[i] && min > dist[i]) {
+                minidx = i;
+                min = dist[i];
+            }
+        }
+        if (minidx == -1) {
+            break;
+        }
+        ans += dist[minidx];
+        //printf("%.2lf\n", dist[minidx]);
+        // cout << dist[minidx] << endl;
+        visited[minidx] = true;
+        for (int i = 0; i < n; ++i) {
+            if (visited[i]) {
+                continue;
+            }
+            // 注意区别在这里
+            if (graph[minidx][i] < dist[i]) {
+                dist[i] = graph[minidx][i];
+            }
+        }
+    }
+    return ans;
+}
+int SQR(int x) {
+    return x * x;
+}
+int main() {
+    int n;
+    int x[maxn];
+    int y[maxn];
+    int z[maxn];
+    cin >> n;
+    for (int i = 0; i < n; ++i) {
+        cin >> x[i];
+        cin >> y[i];
+        cin >> z[i];
+    }
+    edgetype graph[maxn][maxn];
+    initgraph(graph, maxn);
+    for (int i = 0; i < n; ++i) {
+        for (int j = i; j < n; ++j) {
+            // 坑 这里确定边权重需要重点关注
+            edgetype fee = sqrt(SQR(x[i] - x[j]) + SQR(y[i] - y[j])) + SQR(z[i] - z[j]);
+
+            addedge(graph, i, j, fee);
+            addedge(graph, j, i, fee);
+        }
+    }
+
+    printf("%.2lf\n", prim(graph, n));
+    return 0;
+}
