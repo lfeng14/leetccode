@@ -1,0 +1,79 @@
+// 题目 https://www.lanqiao.cn/problems/2363/learning/?page=1&first_category_id=1&name=%E5%9F%8E%E9%82%A6
+
+#include <iostream>
+#include <climits>
+using namespace std;
+#define maxn 2021
+
+void initgraph(int graph[][maxn], int n) {
+    for (int i = 0; i < maxn; ++i) {
+        for (int j = i; j < maxn; ++j) {
+            graph[i][j] = INT_MAX;
+            graph[j][i] = INT_MAX;
+        }
+    }
+}
+
+void addedge(int graph[][maxn], int u, int v, int w) {
+    if (graph[u][v] > w) {
+        graph[u][v] = w;
+    }
+};
+
+int main() {
+    int graph[maxn][maxn];
+    initgraph(graph, maxn);
+    for (int i = 0; i < maxn; ++i) {
+        for (int j = i; j < maxn; ++j) {
+            int x = i + 1;
+            int y = j + 1;
+            int sum = 0;
+            // 坑
+            while (x || y) {
+                if (x % 10 != y % 10) {
+                    sum += x % 10 + y % 10;
+                }
+                x = x / 10;
+                y = y / 10;
+            }
+            addedge(graph, i, j, sum);
+            addedge(graph, j, i, sum);
+        }
+    }
+    int dist[maxn] = { INT_MAX };
+    for (int i = 0; i < maxn; ++i) {
+        dist[i] = graph[0][i];
+    }
+    bool visited[maxn] = { false };
+    dist[0] = 0;
+
+    int ans = 0;
+    while (true) {
+        int minidx = -1;
+        int min = INT_MAX;
+        for (int i = 0; i < maxn; ++i) {
+            if (!visited[i] && min > dist[i]) {
+                minidx = i;
+                min = dist[i];
+            }
+        }
+        if (minidx == -1) {
+            break;
+        }
+        ans += dist[minidx];
+        //cout << dist[minidx] << endl;
+        visited[minidx] = true;
+        for (int i = 0; i < maxn; ++i) {
+            if (visited[i]) {
+                continue;
+            }
+            // 注意区别在这里
+            if (graph[minidx][i] < dist[i]) {
+                dist[i] = graph[minidx][i];
+            }
+        }
+    }
+    cout << ans << endl;
+    // 请在此输入您的代码
+    return 0;
+}
