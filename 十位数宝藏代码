@@ -1,4 +1,5 @@
 // https://www.lanqiao.cn/problems/18358/learning/?page=1&first_category_id=1&name=%E5%8D%81%E4%BD%8D%E6%95%B0%E5%AE%9D%E8%97%8F
+// 回溯记得剪枝
 
 #include <iostream>
 #include <memory.h>
