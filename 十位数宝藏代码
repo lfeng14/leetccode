@@ -1,0 +1,40 @@
+// https://www.lanqiao.cn/problems/18358/learning/?page=1&first_category_id=1&name=%E5%8D%81%E4%BD%8D%E6%95%B0%E5%AE%9D%E8%97%8F
+
+#include <iostream>
+#include <memory.h>
+using namespace std;
+#define maxn 100
+long long minval = 9876543210;
+long long maxval = 0;
+bool visited[maxn];
+void dfs(int curdepth, int maxdepth, long long curval) {
+    if (curdepth == maxdepth) {
+        if (curval % 11 == 0) {
+            if (curval > maxval) {
+                maxval = curval;
+            }
+            if (curval < minval) {
+                minval = curval;
+            }
+        }
+        return;
+    }
+    for (int i = 0; i < maxdepth; ++i) {
+        // 坑 最高位不能为0
+        if (curdepth == 0 && i == 0) {
+            continue;
+        }
+        if (!visited[i]) {
+            visited[i] = true;
+            dfs(curdepth + 1, maxdepth, curval * 10 + i);
+            visited[i] = false;
+        }
+    }
+}
+int main()
+{
+    memset(visited, false, sizeof(visited));
+    dfs(0, 10, 0);
+    cout << maxval - minval << endl;
+    return 0;
+}
