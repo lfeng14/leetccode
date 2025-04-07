@@ -1,0 +1,50 @@
+// https://leetcode.cn/problems/keys-and-rooms/description/
+
+class Solution {
+#define maxn 1001
+    vector<vector<int>> edges;
+    bool visited[maxn];
+    void init(int n) {
+        for (int i = 0; i < n; ++i) {
+            edges.push_back({});
+        }
+        memset(visited, false, sizeof(visited));
+    }
+    void addedge(int u, int v) { edges[u].push_back(v); }
+    void bfs(int n, int s) {
+        queue<int> q;
+        q.push(s);
+        visited[s] = true;
+        while (!q.empty()) {
+            int u = q.front();
+            q.pop();
+
+            for (int i = 0; i < edges[u].size(); ++i) {
+                if (visited[edges[u][i]]) {
+                    continue;
+                }
+                q.push(edges[u][i]);
+                visited[edges[u][i]] = true;
+            }
+        }
+    }
+
+public:
+    bool canVisitAllRooms(vector<vector<int>>& rooms) {
+        init(rooms.size());
+        for (int i = 0; i < rooms.size(); ++i) {
+            for (int j = 0; j < rooms[i].size(); ++j) {
+                int u = i; 
+                int v = rooms[i][j];
+                addedge(u, v);
+            }
+        }
+        bfs(rooms.size(), 0);
+        for (int i = 0; i < rooms.size(); ++i) {
+            if (visited[i] == false) {
+                return false;
+            }
+        }
+        return true;
+    }
+};
