@@ -1,0 +1,100 @@
+// https://www.lanqiao.cn/problems/2194/learning/?page=1&first_category_id=1&name=%E5%87%BA%E5%B7%AE
+
+#include <iostream>
+#include <vector>
+#include <climits>
+using namespace std;
+
+#define maxn 1000
+#define edgeType int
+#define inf INT_MAX
+int stay[maxn];
+edgeType graph[maxn][maxn];
+
+// 初始化邻接矩阵
+void initEdges(int n) {
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+            graph[i][j] = inf;
+        }
+    }
+}
+
+// 加边
+void addEdge(int u, int v, edgeType w) {
+    if (graph[u][v] == inf || w < graph[u][v]) {
+        graph[u][v] = w;
+    }
+}
+
+// Dijkstra 框架代码
+void dijkstra(int n, int s, edgeType dist[maxn]) {
+    bool visited[maxn];
+    for (int i = 0; i < n; ++i) {
+        visited[i] = false;
+        dist[i] = inf;
+    }
+    dist[s] = 0;
+
+    while (1) {
+        edgeType minDist = inf;
+        int minIndex;
+        for (int i = 0; i < n; ++i) {
+            if (visited[i]) {
+                continue;
+            }
+            if (minDist == inf || dist[i] < minDist) {
+                minDist = dist[i];
+                minIndex = i;
+            }
+        }
+        if (minDist == inf) {
+            break;
+        }
+        visited[minIndex] = true;
+
+        for (int i = 0; i < n; ++i) {
+            if (visited[i]) {
+                continue;
+            }
+            edgeType dis = graph[minIndex][i];
+            if (dis == inf) {
+                continue;
+            }
+            if (dist[i] == inf || dist[minIndex] + dis < dist[i]) {
+                dist[i] = dist[minIndex] + dis;
+            }
+        }
+    }
+}
+
+int main()
+{
+    int n, m, e;
+    int s = 0;
+    cin >> n;
+    cin >> e;
+    for (int i = 0; i < n; ++i) {
+        cin >> stay[i];
+    }
+    stay[n - 1] = 0;
+    m = 0;
+    // 初始化
+    initEdges(n);
+
+    // 建图
+    for (int i = 0; i < e; ++i) {
+        int u, v, w;
+        cin >> u >> v >> w;
+        addEdge(u - 1, v - 1, w + stay[v - 1]);
+        m++;
+        addEdge(v - 1, u - 1, w + stay[u - 1]);
+        m++;
+    }
+    // dijkstra
+    int dist[maxn];
+    dijkstra(n, 0, dist);
+    cout << dist[n - 1];
+
+    return 0;
+}
