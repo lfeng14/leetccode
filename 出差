@@ -1,0 +1,71 @@
+// https://www.lanqiao.cn/problems/2194/learning/?page=1&first_category_id=1&name=%E5%87%BA%E5%B7%AE
+// bellman
+
+#include <iostream>
+using namespace std;
+#define maxn 1000
+#define maxm 20000
+#define inf 1000000000
+int dist[maxn];
+int stay[maxn];
+struct EDGE {
+    int u, v;
+    int w;
+};
+EDGE edges[maxm];
+
+int doRelax(int m) {
+    int isRelax = 0;
+    for (int i = 0; i < m; ++i) {
+        if (dist[edges[i].u] + edges[i].w < dist[edges[i].v]) {
+            dist[edges[i].v] = dist[edges[i].u] + edges[i].w;
+            isRelax = 1;
+        }
+    }
+    return isRelax;
+}
+void init(int n, int s) {
+    for (int i = 0; i < n; ++i) {
+        dist[i] = inf;
+    }
+    dist[s] = 0;
+}
+
+int bellman(int n, int m, int s) {
+    for (int i = 0; i < n - 1;++i) {
+        if (!doRelax(m)) {
+            return 0;
+        }
+    }
+    return 0;
+}
+
+int main()
+{
+    int n, m, e;
+    int s = 0;
+    cin >> n;
+    cin >> e;
+    for (int i = 0; i < n; ++i) {
+        cin >> stay[i];
+    }
+    stay[n - 1] = 0;
+    m = 0;
+    for (int i = 0; i < e; ++i) {
+        int u, v, w;
+        cin >> u >> v >> w;
+        edges[m].u = u - 1;
+        edges[m].v = v - 1;
+        edges[m].w = w + stay[v - 1];
+        m++;
+        edges[m].u = v - 1;
+        edges[m].v = u -1;
+        edges[m].w = w + stay[u - 1];;
+        m++;
+    }
+    init(n, s);
+
+    bellman(n, m, s);
+    cout << dist[n - 1] << endl;
+    return 0;
+}
