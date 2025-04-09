@@ -1,0 +1,121 @@
+// https://www.lanqiao.cn/problems/3903/learning/?page=1&first_category_id=1&name=%E5%AD%97%E6%AF%8D%E9%98%B6%E6%A2%AF
+
+#include <iostream>
+#include <vector>
+#include <climits>
+using namespace std;
+
+#define maxn 500
+#define edgeType int
+#define inf INT_MAX
+string str[maxn];
+edgeType graph[maxn][maxn];
+
+// 初始化邻接矩阵
+void initEdges(int n) {
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+            graph[i][j] = inf;
+        }
+    }
+}
+
+// 加边
+void addEdge(int u, int v, edgeType w) {
+    if (graph[u][v] == inf || w < graph[u][v]) {
+        graph[u][v] = w;
+    }
+}
+
+// Dijkstra 框架代码
+void dijkstra(int n, int s, edgeType dist[maxn]) {
+    bool visited[maxn];
+    for (int i = 0; i < n; ++i) {
+        visited[i] = false;
+        dist[i] = inf;
+    }
+    dist[s] = 0;
+
+    while (1) {
+        edgeType minDist = inf;
+        int minIndex;
+        for (int i = 0; i < n; ++i) {
+            if (visited[i]) {
+                continue;
+            }
+            if (minDist == inf || dist[i] < minDist) {
+                minDist = dist[i];
+                minIndex = i;
+            }
+        }
+        if (minDist == inf) {
+            break;
+        }
+        visited[minIndex] = true;
+
+        for (int i = 0; i < n; ++i) {
+            if (visited[i]) {
+                continue;
+            }
+            edgeType dis = graph[minIndex][i];
+            if (dis == inf) {
+                continue;
+            }
+            if (dist[i] == inf || dist[minIndex] + dis < dist[i]) {
+                dist[i] = dist[minIndex] + dis;
+            }
+        }
+    }
+}
+
+int calc(string& a, string& b) {
+    int ans = 0;
+    for (int i = 0; i < a.size(); ++i) {
+        if (a[i] != b[i]) {
+            ans++;
+        }
+    }
+    return ans;
+}
+int main()
+{
+    int n = 0;
+    cin >> n;
+
+
+    for (int i = 0;i < n; ++i) {
+        cin >> str[i];
+    }
+    int startidx = 0;
+    int endidx = 0;
+    string startstr;
+    string endstr;
+    cin >> startstr;
+    cin >> endstr;
+    for (int i = 0;i < n; ++i) {
+        if (str[i] == startstr) {
+            startidx = i;
+        }
+        if (str[i] == endstr) {
+            endidx = i;
+        }
+    }
+    // 初始化
+    initEdges(n);
+
+    // 建图
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < i; ++j) {
+            if (calc(str[i], str[j]) == 1) {
+                addEdge(i, j, 1);
+                addEdge(j, i, 1);
+            }
+        }
+    }
+    // dijkstra
+    int dist[maxn];
+    dijkstra(n, startidx, dist);
+    cout << dist[endidx] << endl;
+
+    return 0;
+}
