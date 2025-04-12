@@ -1,0 +1,92 @@
+// https://leetcode.cn/problems/number-of-ways-to-arrive-at-destination/description/
+// dijkstra
+
+class Solution {
+#define maxn 200
+#define edgeType long long
+#define inf LLONG_MAX
+
+    edgeType graph[maxn][maxn];
+    edgeType ways[maxn];
+
+    // 初始化邻接矩阵
+    void initEdges(int n) {
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < n; ++j) {
+                graph[i][j] = inf;
+            }
+        }
+        for (int i = 0; i < n; ++i) {
+            ways[i] = 0;
+        }
+    }
+
+    // 加边
+    void addEdge(int u, int v, edgeType w) {
+        if (graph[u][v] == inf || w < graph[u][v]) {
+            graph[u][v] = w;
+        }
+    }
+
+    // Dijkstra 框架代码
+    void dijkstra(int n, int s, edgeType dist[maxn]) {
+        bool visited[maxn];
+        for (int i = 0; i < n; ++i) {
+            visited[i] = false;
+            dist[i] = inf;
+        }
+        dist[s] = 0;
+      // 注意这里需要起始点的方案数量是1
+        ways[s] = 1;
+        while (1) {
+            edgeType minDist = inf;
+            int minIndex;
+            for (int i = 0; i < n; ++i) {
+                if (visited[i]) {
+                    continue;
+                }
+                if (minDist == inf || dist[i] < minDist) {
+                    minDist = dist[i];
+                    minIndex = i;
+                }
+            }
+            if (minDist == inf) {
+                break;
+            }
+            visited[minIndex] = true;
+
+            for (int i = 0; i < n; ++i) {
+                if (visited[i]) {
+                    continue;
+                }
+                edgeType dis = graph[minIndex][i];
+                if (dis == inf) {
+                    continue;
+                }
+                if (dist[i] == inf || dist[minIndex] + dis < dist[i]) {
+                    dist[i] = dist[minIndex] + dis;
+                    ways[i] = ways[minIndex];
+                  // 这里处理相同dist场景
+                } else if (dist[minIndex] + dis == dist[i]) {
+                    ways[i] =
+                        ((long long)ways[i] + ways[minIndex]) % 1000000007;
+                }
+            }
+        }
+    }
+
+public:
+    int countPaths(int n, vector<vector<int>>& roads) {
+        // 初始化
+        initEdges(n);
+        // 建图
+        for (int i = 0; i < roads.size(); ++i) {
+            addEdge(roads[i][0], roads[i][1], roads[i][2]);
+            addEdge(roads[i][1], roads[i][0], roads[i][2]);
+        }
+        // dijkstra
+        edgeType dist[maxn];
+        dijkstra(n, 0, dist);
+        return ways[n - 1];
+    }
+};
