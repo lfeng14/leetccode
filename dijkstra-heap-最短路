@@ -1,0 +1,97 @@
+// https://leetcode.cn/problems/number-of-ways-to-arrive-at-destination/
+
+#include <iostream>
+#include <climits>
+#include <vector>
+#include <queue>
+#include<cstring>
+
+using namespace std;
+
+#define maxn 100000
+#define edgetype int
+#define inf INT_MAX
+
+struct dist {
+	int _v;
+	int _w;
+	dist(int v, int w) {
+		_v = v;
+		_w = w;
+	};
+	bool operator < (const dist& d) const {
+		return _w > d._w;
+	}
+};
+
+vector<vector< dist>> edges(maxn);
+edgetype d[maxn];
+bool visited[maxn];
+priority_queue<dist> heap;
+
+void init(int n) {
+	memset(visited, false, n);
+	for (int i = 0; i < n; i++) {
+		d[i] = inf;
+	}
+}
+
+void addedge(int u, int v, int w) {
+
+	edges[u].push_back(dist(v, w));
+}
+
+int findmin() {
+	dist d = heap.top();
+	heap.pop();
+	return d._v;
+}
+
+void updateedges(int u) {
+
+	for (int i = 0; i < edges[u].size(); ++i) {
+		int v = edges[u][i]._v;
+		int w = edges[u][i]._w;
+		if (visited[v]) {
+			continue;
+		}
+		if (w == inf || d[u] + w < d[v]) {
+			d[v] = d[u] + w;
+			heap.push(dist(v, d[v]));
+		}
+	}
+
+}
+
+void dijkstra(int n,int s) {
+
+	d[s] = 0;
+	heap.push(dist(s, 0));
+	while (!heap.empty()) {
+		int v = findmin();
+		visited[v] = true;
+		updateedges(v);
+	}
+}
+int main()
+{
+	int n;
+	cin >> n;
+	int m;
+	cin >> m;
+	init(n);
+	for (int i = 0;i < m; ++i) {
+		int u, v, w;
+		cin >> u >> v >> w;
+		addedge(u - 1, v - 1, w);
+	}
+
+	dijkstra(n, 0);
+	if (d[n - 1] == inf) {
+		cout << -1;
+	}
+	else {
+		cout << d[n - 1];
+	}
+	return 0;
+}
