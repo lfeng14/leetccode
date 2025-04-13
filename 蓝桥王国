@@ -1,0 +1,102 @@
+// https://www.lanqiao.cn/problems/1122/learning/?page=1&first_category_id=1&name=%E8%93%9D%E6%A1%A5%E7%8E%8B%E5%9B%BD
+
+#include <iostream>
+#include <climits>
+#include <vector>
+#include <queue>
+#include <cstring>
+
+using namespace std;
+
+#define maxn 300000
+#define edgetype long long
+#define inf LLONG_MAX
+
+struct dist {
+	int _v;
+	edgetype _w;
+	dist(int v, edgetype w) {
+		_v = v;
+		_w = w;
+	};
+	bool operator < (const dist& d) const {
+		return _w > d._w;
+	}
+};
+
+vector<vector< dist>> edges(maxn);
+edgetype d[maxn];
+bool visited[maxn];
+priority_queue<dist> heap;
+
+void init(int n) {
+	memset(visited, false, n);
+	for (int i = 0; i < n; i++) {
+		d[i] = inf;
+	}
+}
+
+void addedge(int u, int v, edgetype w) {
+
+	edges[u].push_back(dist(v, w));
+}
+
+int findmin() {
+	dist d = heap.top();
+	heap.pop();
+	return d._v;
+}
+
+void updateedges(int u) {
+
+	for (int i = 0; i < edges[u].size(); ++i) {
+		int v = edges[u][i]._v;
+		edgetype w = edges[u][i]._w;
+		if (visited[v]) {
+			continue;
+		}
+		if (w == inf || d[u] + w < d[v]) {
+			d[v] = d[u] + w;
+			heap.push(dist(v, d[v]));
+		}
+	}
+
+}
+
+void dijkstra(int n,int s) {
+
+	d[s] = 0;
+	heap.push(dist(s, 0));
+	while (!heap.empty()) {
+		int v = findmin();
+		visited[v] = true;
+		updateedges(v);
+	}
+}
+int main()
+{
+	int n;
+	cin >> n;
+	int m;
+	cin >> m;
+	init(n);
+	for (int i = 0;i < m; ++i) {
+		int u, v;
+    edgetype w;
+		cin >> u >> v >> w;
+		addedge(u - 1, v - 1, w);
+	}
+
+	dijkstra(n, 0);
+	for (int i = 0; i < n; ++i) {
+    if (i) {
+      cout << " ";
+    }
+    if (d[i] == inf) {
+      cout << -1;
+    } else {
+      cout << d[i];
+    }
+	}
+	return 0;
+}
