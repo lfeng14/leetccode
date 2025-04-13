@@ -20,7 +20,7 @@ struct dist {
 		_w = w;
 	};
 	bool operator < (const dist& d) const {
-		return _w > d._w;
+		return _w > d._w;  // 小顶堆，为什么使用小于号
 	}
 };
 
