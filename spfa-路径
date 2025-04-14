@@ -1,0 +1,102 @@
+// https://www.lanqiao.cn/problems/1460/learning/?page=1&first_category_id=1&name=%E8%B7%AF%E5%BE%84
+
+#include <iostream>
+#include <climits>
+#include <vector>
+#include <queue>
+#include <cstring>
+
+using namespace std;
+
+#define maxn 2021
+#define edgetype int
+#define inf INT_MAX
+
+struct dist {
+	int _v;
+	int _w;
+	dist(int v, int w) {
+		_v = v;
+		_w = w;
+	};
+	bool operator < (const dist& d) const {
+		return _w > d._w;
+	}
+};
+
+vector<vector< dist>> edges(maxn);
+edgetype d[maxn];
+priority_queue<dist> heap;
+bool inqueue[maxn];
+
+void init(int n) {
+	memset(inqueue, false, n);
+	for (int i = 0; i < n; i++) {
+		d[i] = inf;
+	}
+}
+
+void addedge(int u, int v, int w) {
+	edges[u].push_back(dist(v, w));
+}
+
+void updateedges(int u) {
+	for (int i = 0; i < edges[u].size(); ++i) {
+		int v = edges[u][i]._v;
+		int w = edges[u][i]._w;
+		if (inqueue[v]) {
+			continue;
+		}
+		if (d[u] + w < d[v]) {
+			d[v] = d[u] + w;
+			heap.push(dist(v, d[v]));
+			inqueue[v] = true;
+		}
+	}
+
+}
+
+void spfa(int n,int s) {
+	while (!heap.empty()) {
+		dist d = heap.top();
+		heap.pop();
+		inqueue[d._v] = false;
+		updateedges(d._v);
+	}
+}
+
+int gcd(int a, int b) {
+	return !b ? a : gcd(b, a % b);
+}
+
+int lcm(int a, int b) {
+	return a / gcd(a, b) * b;
+}
+
+int main()
+{
+	int n = 2021;
+	//cin >> n;
+	//int m;
+	//cin >> m;
+	init(n);
+	for (int i = 0;i < n; ++i) {
+		for (int j = 0;j <= i; ++j) {
+			int u, v, w;
+			u = i;
+			v = j;
+			if (abs(i - j) <= 21) {
+				w = lcm(u+1, v+1);
+				addedge(u, v, w);
+				addedge(v, u, w);
+			}
+		}
+	}
+	int s = 0;
+	d[s] = 0;
+	heap.push(dist(s, 0));
+	inqueue[s] = true;
+	spfa(n, 0);
+	cout << d[n - 1];
+	return 0;
+}
