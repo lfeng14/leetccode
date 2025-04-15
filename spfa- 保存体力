@@ -1,0 +1,100 @@
+// https://www.lanqiao.cn/problems/3007/learning/?page=1&first_category_id=1&name=%E4%BF%9D%E5%AD%98%E4%BD%93%E5%8A%9B
+
+// https://www.lanqiao.cn/problems/3007/learning/?page=1&first_category_id=1&name=%E4%BF%9D%E5%AD%98%E4%BD%93%E5%8A%9B
+
+#include <iostream>
+#include <climits>
+#include <vector>
+#include <queue>
+#include <cstring>
+#include <cmath>
+using namespace std;
+
+#define maxn 10000
+#define edgetype double
+#define inf -1000000000
+
+struct dist {
+	int _v;
+	edgetype _w;
+	dist(int v, edgetype w) {
+		_v = v;
+		_w = w;
+	};
+ // 无需运算符重载
+	//bool operator < (const dist& d) const {
+	//	return _w < d._w;
+	//}
+};
+
+vector<vector< dist>> edges(maxn);
+edgetype d[maxn];
+// 注意这里不是优先队列
+queue<int> q;
+bool inqueue[maxn];
+
+void init(int n) {
+	memset(inqueue, false, n);
+	for (int i = 0; i < n; i++) {
+		d[i] = inf;
+	}
+}
+
+void addedge(int u, int v, edgetype w) {
+	edges[u].push_back(dist(v, w));
+}
+
+void updateedges(int u) {
+	for (int i = 0; i < edges[u].size(); ++i) {
+		int v = edges[u][i]._v;
+		edgetype w = edges[u][i]._w;
+		if (d[u] + w > d[v]) {
+      // 这里只要更大或者更小则更新
+			d[v] = d[u] + w;
+			if (!inqueue[v]) {
+        // 已经在队列里则不重复入队
+				inqueue[v] = true;
+				q.push(v);
+			}
+		}
+	}
+}
+
+void spfa(int n, int s) {
+	while (!q.empty()) {
+		int v = q.front();
+		q.pop();
+		inqueue[v] = false;
+		updateedges(v);
+	}
+}
+
+int main()
+{
+	int n;
+	cin >> n;
+	int m;
+	cin >> m;
+	int t;
+	cin >> t;
+	init(n);
+	for (int i = 0;i < m; ++i) {
+		int u, v;
+		edgetype w;
+		cin >> u >> v >> w;
+		addedge(u - 1, v - 1, log10(w));
+		addedge(v - 1, u - 1, log10(w));
+	}
+	int s = 0;
+	d[s] = 0;
+	q.push(s);
+	inqueue[s] = true;
+	spfa(n, 0);
+	if (d[n - 1] == inf) {
+		cout << -1 << endl;
+	}
+	else {
+		printf("%.8lf", t * pow(10, d[n - 1]));
+	}
+	return 0;
+}
