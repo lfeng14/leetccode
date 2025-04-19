@@ -1,0 +1,47 @@
+// https://www.lanqiao.cn/problems/3007/learning/?page=1&first_category_id=1&name=%E4%BF%9D%E5%AD%98%E4%BD%93%E5%8A%9B
+
+#include <iostream>
+#include <climits>
+#include <vector>
+#include <queue>
+#include <cstring>
+#include <cmath>
+using namespace std;
+
+#define maxn 10000
+#define inf  1000000007 
+int main()
+{
+	int n;
+	cin >> n;
+	int arr[maxn];
+	int dp[maxn];
+	memset(dp, 0, sizeof(dp));
+	for (int i = 0; i < n; ++i) {
+		cin >> arr[i];
+	}
+	// dp[i]，0开始，表示第i个元素结尾的数组切分个数；
+	dp[0] = 1;
+	for (int i = 1;i < n; ++i) {
+		int maxv = 0;
+		int minv = inf;
+		for (int j = i; j >= 0; --j) {
+			maxv = max(arr[j], maxv);
+			minv = min(arr[j], minv);
+			if (maxv - minv == i - j) {
+				if (j == 0) {
+					// 这里需要注意的点：整个也是一种切分方案
+					dp[i] += 1;
+				}
+				else {
+					dp[i] += dp[j - 1];
+				}
+				if (dp[i] >= inf) {
+					dp[i] %= inf;
+				}
+			}
+		}
+ 	}
+	cout << dp[n - 1];
+	return 0;
+}
