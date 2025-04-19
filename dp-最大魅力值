@@ -1,0 +1,41 @@
+// https://www.lanqiao.cn/problems/5885/learning/?page=1&first_category_id=1&name=%E6%9C%80%E5%A4%A7%E9%AD%85%E5%8A%9B%E5%80%BC
+
+#include <iostream>
+using namespace std;
+
+#define maxn 101
+#define inf -10000000
+int dp[maxn][maxn];
+int a[maxn];
+
+int main()
+{
+    int n;
+    cin >> n;
+    for (int i = 1; i <= n; ++i) {
+        cin >> a[i];
+    }
+    for (int i = 0; i <= n; ++i) {
+        for (int j = 0; j <= n; ++j) {
+          // 这里常犯的错误是设置0，但是还要增加一种状态时不可达。
+            dp[i][j] = inf;
+        }
+    }
+
+    dp[0][0] = 0;
+
+    dp[1][0] = 0;
+    dp[1][1] = a[1];
+
+    for (int i = 2; i <= n; ++i) {
+        dp[i][0] = 0;
+        for (int j = 1; j <= n; ++j) {
+          // 转移方程，
+            dp[i][j] = max(a[i] + dp[i - 2][j - 1], dp[i - 1][j]);
+        }
+    }
+
+    cout << dp[n][n / 2] << endl;
+
+    return 0;
+}
