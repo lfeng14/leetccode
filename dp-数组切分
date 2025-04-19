@@ -1,5 +1,11 @@
 // https://www.lanqiao.cn/problems/3007/learning/?page=1&first_category_id=1&name=%E4%BF%9D%E5%AD%98%E4%BD%93%E5%8A%9B
 
+// 这道题的关键点：dp[i]，0开始，表示第i个元素结尾的数组切分个数；
+// 第i个为终点的延申连续子数组，与前面的dp[j] 可以组成一个新的切分方式
+-------------------|
+-----------------|-|
+----------------|--|
+---------------|---|
 #include <iostream>
 #include <climits>
 #include <vector>
