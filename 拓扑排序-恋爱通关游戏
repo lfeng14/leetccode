@@ -1,0 +1,79 @@
+// https://www.lanqiao.cn/problems/2947/learning/?page=1&first_category_id=1&name=%E6%81%8B%E7%88%B1%E9%80%9A%E5%85%B3
+
+// 整体还是使用拓扑排序的模板，这道题审题比较重要
+// 题目虽然说有向图，但是不能从A[i] > A[j]，所以相当于有向图，所以构图时构建有向图
+// 拓扑排序从入度为0的点开始遍历，因为这样保证从起点开始遍历
+// 最后注意，最大魅力值超过INT_MAX，使用long long类型
+// 拓扑排序仅仅确认遍历节点的顺序，不涉及最短路径，当然遍历后你也可以求从启动出发到不同终点的路径、花费、魅力值等。相当于dijkstra特殊情况(节点遍历顺序确定的情况)
+
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <cstring>
+using namespace std;
+
+#define maxn 1000000
+
+struct edgeWeight {
+  int v;
+  int w;
+  edgeWeight(int _v, int _w): v(_v), w(_w) {}
+};
+
+vector<edgeWeight> edges[maxn];
+int indeg[maxn];
+queue<int> q;
+long long dist[maxn];
+long long maxv = -1;
+
+void topoSort(int n) {
+    for (int i = 0; i < n; ++i) {
+        if (!indeg[i]) {
+          // dist[i] = 0;
+            q.push(i);
+            
+        }
+    }
+    dist[0] = 0;
+    while (!q.empty()) {
+        int u = q.front();
+        q.pop();
+        for (int i = 0; i < edges[u].size(); ++i) {
+            int v = edges[u][i].v;
+            int w = edges[u][i].w;
+            indeg[v]--;
+            dist[v] = max(dist[v], dist[u] + w);
+            if (!indeg[v]) {
+                q.push(v);
+            }
+        }
+    }
+}
+
+int main()
+{
+    int n;
+    int m;
+    cin >> n >> m;
+    memset(indeg, 0, sizeof(indeg));
+    memset(dist, -1, sizeof(dist));
+    for (int i = 0; i < n; ++i) {
+      dist[i] = - 2e9;
+    }
+    for (int i = 0; i < m; ++i) {
+        int u, v, w;
+        cin >> u >> v >> w;
+        --u;
+        --v;
+        edges[u].push_back(edgeWeight(v, w));
+    }
+    topoSort(n);
+    int ans = 0;
+    for (int i = 0; i < n; ++i) {
+      if (edges[i].size() == 0 && dist[i] >= 100) {
+        ans++;
+      }
+    }
+    cout << ans << endl;
+    return 0;
+}
