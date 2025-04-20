@@ -34,6 +34,7 @@ void topoSort(int n) {
             
         }
     }
+     需要设置dist[0] = 0，而不是入度为0都是0
     dist[0] = 0;
     while (!q.empty()) {
         int u = q.front();
