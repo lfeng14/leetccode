@@ -59,6 +59,7 @@ int main()
     memset(indeg, 0, sizeof(indeg));
     memset(dist, -1, sizeof(dist));
     for (int i = 0; i < n; ++i) {
+      //  这里不能设置为0 ？？？？
       dist[i] = - 2e9;
     }
     for (int i = 0; i < m; ++i) {
