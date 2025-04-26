@@ -1,0 +1,47 @@
+// https://www.lanqiao.cn/problems/1174/learning/?page=1&first_category_id=1&name=%E5%B0%8F%E6%98%8E%E7%9A%84
+
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+#define maxn 101
+#define maxvn 1001
+
+int volume[maxn];
+int value[maxn];
+// 主要只能从1开始
+int dp[maxn][maxvn];
+
+void napsack01(int n, int cap) {
+    for (int i = 1; i <= n; ++i) {
+        dp[0][i] = 0;
+    }
+    for (int i = 1; i <= n; ++i) {
+        for (int j = 1; j <= cap; ++j) {
+            if (volume[i] <= j) {
+                dp[i][j] = max(dp[i - 1][j], dp[i - 1][j - volume[i]] + value[i]);
+            } else {
+				dp[i][j] = dp[i - 1][j];
+            }
+        }
+    }
+}
+
+int main()
+{
+    int n, cap;
+    cin >> n;
+    cin >> cap;
+    for (int i = 1;i <= n; i++) {
+		cin >> volume[i];  
+		cin >> value[i];
+    }
+    napsack01(n, cap);
+    int ans = 0;
+    for (int i = 1; i <= cap;++i) {
+        ans = max(ans, dp[n][i]);
+    }
+    cout << ans << endl;
+    return 0;
+}
