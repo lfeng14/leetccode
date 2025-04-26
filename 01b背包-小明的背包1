@@ -10,7 +10,7 @@ using namespace std;
 
 int volume[maxn];
 int value[maxn];
-// 主要只能从1开始
+// 注意只能从1开始
 int dp[maxn][maxvn];
 
 void napsack01(int n, int cap) {
