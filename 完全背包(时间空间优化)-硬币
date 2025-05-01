@@ -1,0 +1,41 @@
+// https://leetcode.cn/problems/coin-lcci/description/
+
+class Solution {
+    // 确定状态:
+    // dp[i][j] 使用前i个硬币时，价值为j，有多少表示法
+    // 状态转移:
+    // dp[i][j] = dp[i - 1][j] + dp[i][j]
+    // 与完全背包的区别:
+    // 没有价值
+    // max 变成 求和
+#define maxn 5
+#define maxv 1000001
+#define inf 0
+#define init 1
+#define vType int
+
+    int dp[maxv];
+    int volume[maxn] = { -1,1, 5, 10, 25 };
+    int v[maxn] = { -1, 0, 0, 0, 0 };
+public:
+    vType opt(vType a, vType b) {
+        if (a == inf) return b;
+        if (b == inf) return a;
+        return (a + b) % 1000000007;
+    }
+    int waysToChange(int cap) {
+        memset(dp, 0, sizeof(dp));
+        for (int j = 1; j <= cap; ++j) {
+            dp[j] = inf;
+        }
+        dp[0] = 1;
+        for (int i = 1; i <= 4; ++i) {
+            // 这个比较重要，占位用途
+            for (int j = volume[i]; j <= cap; ++j) {
+                dp[j] = opt(dp[j], dp[j - volume[i]] + v[i]);
+            }
+        }
+       // 注意点，这里取dp[cap],而不是遍历求最大值
+        return dp[cap];
+    }
+};
