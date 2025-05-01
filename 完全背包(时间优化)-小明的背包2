@@ -1,0 +1,49 @@
+// https://www.lanqiao.cn/problems/1175/learning/?page=1
+// 通过公式推导，dp[i][j - volume[i]] + value[i] 表示第i个至少放一个，将k = 1到cap/w[i]通过公式推导浓缩成这个式子
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+#define maxn 1001
+
+int volume[maxn];
+int value[maxn];
+int dp[maxn][maxn];
+
+void ksnappack(int n, int cap) {
+  for (int i = 1; i <=cap; ++i) {
+    dp[0][i] = 0;
+  }
+
+  for( int i = 1; i <= n; ++i) {
+    for (int j = 0; j <= cap; ++j) {
+        // 关键点：dp[i-1][j] 第i个一个都不放
+        // 关键点：dp[i][j - volume[i]] + value[i] 表示第i个至少放一个，将k = 1到cap/w[i]通过公式推导浓缩成这个式子
+        // 关键点：dp[i][j] 等于第i个一个都不放+第i个至少放一个，两者最大值
+        if (j < volume[i]) {
+          // j < volume[i] 没法取第i个，所以直接等于dp[i-1][j]
+          dp[i][j] = dp[i-1][j];
+        } else {
+          dp[i][j] = max(dp[i-1][j], dp[i][j - volume[i]] + value[i]);
+        }
+    }
+  }
+}
+
+int main()
+{
+  int n, v;
+  cin >> n >> v;
+  for (int i = 1;i <= n; ++i) {
+    cin >> volume[i];
+    cin >> value[i];
+  }
+  // memset(dp, 0, sizeof(dp));
+  ksnappack(n, v);
+  int ans = 0;
+  for (int j = 1; j <= v; ++j) {
+    ans = max(ans, dp[n][j]);
+  }
+  cout << ans << endl;
+  return 0;
+}
