@@ -1,0 +1,27 @@
+// https://www.lanqiao.cn/problems/1516/learning/?page=1&first_category_id=1&tags=%E9%AB%98%E7%B2%BE%E5%BA%A6&tag_relation=intersection&sort=students_count&asc=0
+#include <iostream>
+#include <string>
+#include <algorithm>
+using namespace std;
+
+int main()
+{
+	string a, b, c;
+	cin >> a;
+	cin >> b;
+	int as = a.size();
+	int bs = b.size();
+	
+  int flag = 0;
+	for (int i = as - 1, j = bs - 1; i >= 0 || j >= 0; i--, j--) {
+		if (i >= 0) flag += a[i] - '0';
+		if (j >= 0) flag += b[j] - '0';
+		c.push_back(flag % 10  +  '0') ;
+		flag = flag / 10;
+	}
+  if (flag) c.push_back('1');
+	std::reverse(c.begin(), c.end());
+	cout << c << endl;
+	// 请在此输入您的代码
+	return 0;
+}
