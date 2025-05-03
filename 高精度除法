@@ -1,0 +1,41 @@
+// https://www.luogu.com.cn/problem/P1480
+
+#include <iostream>
+#include <cstring>
+using namespace std;
+void bigintdivide(string a, int b) {
+	int c[10000];
+	memset(c, 0, sizeof(c));
+// 数据类型容易出错
+	long long d = 0;
+	int t = -1;
+	for (int i = 0; i < a.size() ; ++i) {
+// 数据类型容易出错
+		long long v = d * 10 + a[i] - '0';
+		c[i] = v / b;
+		d = v % b;
+		if (t == -1 && c[i] > 0) {
+			t = i;
+		}
+	}
+
+	if (t == -1 && c[0] == 0) {
+		cout << 0 << endl;
+	}
+	else {
+		while (t < a.size()) {
+			cout << c[t];
+			t++;
+		}
+		cout << endl;
+	}
+	cout << endl;
+}
+int main()
+{
+	string a;
+	int b;
+	cin >> a >> b;
+	bigintdivide(a, b);
+	return 0;
+}
