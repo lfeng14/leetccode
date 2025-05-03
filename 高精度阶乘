@@ -1,0 +1,37 @@
+// https://www.lanqiao.cn/problems/1515/learning/?page=1&first_category_id=1&tags=%E9%AB%98%E7%B2%BE%E5%BA%A6&tag_relation=intersection&sort=students_count&asc=0
+
+#include <iostream>
+#include <cstring>
+using namespace std;
+void factorial(int n) {
+	int c[10000];
+	memset(c, 0, sizeof(c));
+	c[0] = 1;
+	int t = 1;
+	for (int i = 1; i <= n; ++i) {
+		for (int j = 0; j < t; ++j) {
+			c[j] = c[j] * i;
+		}
+		for (int j = 0; j < t; ++j) {
+			if (c[j] > 9) {
+				c[j + 1] = c[j + 1] + c[j] / 10;
+				c[j] = c[j] % 10;
+        // 这里是关键点，不断拓展位数
+				if (j + 1 == t) t++;
+			}
+		}
+	}
+  // 这里也需要注意t是位数，所以索引要先减一
+	while (t) {
+    t--;
+		cout << c[t];
+	}
+	cout << endl;
+}
+int main()
+{
+	int n;
+	cin >> n;
+	factorial(n);
+	return 0;
+}
