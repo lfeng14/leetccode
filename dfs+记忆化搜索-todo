@@ -1,19 +1,15 @@
 // https://www.luogu.com.cn/problem/B3862
 
-// 6个用例失败了，4
+// 栈深度超过512M
 #include <iostream>
 #include <vector>
 using namespace std;
 
 vector<vector<int>> edges(1001);
 vector<int> memory(1001);
-vector<int> visited(1001);
 int dfs(int from, int n) {
 	if (memory[from] != 0)
 		return memory[from];
-	if (visited[from])
-		return 0;
-	visited[from] = true;
 	int ans = from;
 	for (int i = 0; i < edges[from].size(); ++i) {
 		int to = edges[from][i];
@@ -40,6 +36,51 @@ int main()
 		int from = i;
 		if (memory[from] == 0)
 			dfs(from, n);
+	}
+
+	for (int i = 1;i <= n; ++i) {
+		cout << memory[i] << " ";
+	}
+	cout << endl;
+	return 0;
+}
+
+
+// 成功代码
+// 反向建边，为什么这种就不会超过512M
+#include <iostream>
+#include <vector>
+using namespace std;
+
+vector<vector<int>> edges(100001);
+vector<int> memory(100001);
+void dfs(int from, int n, int big) {
+	if (memory[from] != 0)
+		return;
+	memory[from] = big;
+	for (int i = 0; i < edges[from].size(); ++i) {
+		int to = edges[from][i];
+		dfs(to, n, big);
+	}
+	//cout << "memory[" << from << "] = " << ans << endl;
+}
+
+int main()
+{
+	int n, m;
+	cin >> n >> m;
+
+	for (int i = 0; i < m; i++) {
+		int from, to;
+		cin >> from >> to;
+		edges[to].push_back(from);
+	}
+	vector<int> ans(n + 1);
+
+	for (int i = n;i >= 1; --i) {
+		int from = i;
+		if (memory[from] == 0)
+			dfs(from, n, from);
 	}
 
 	for (int i = 1;i <= n; ++i) {
