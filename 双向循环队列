@@ -1,4 +1,4 @@
-// https://www.lanqiao.cn/problems/1515/learning/?page=1&first_category_id=1&tags=%E9%AB%98%E7%B2%BE%E5%BA%A6&tag_relation=intersection&sort=students_count&asc=0
+// https://www.lanqiao.cn/problems/1112/learning/?page=1&first_category_id=1&tag_relation=intersection&name=%E9%93%BE%E8%A1%A8
 // 先写主体逻辑，然后写需要的函数接口
 
 #include <iostream>
