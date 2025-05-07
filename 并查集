@@ -1,0 +1,55 @@
+// https://www.lanqiao.cn/problems/10036/learning/?page=1&first_category_id=1&tags=%E5%B9%B6%E6%9F%A5%E9%9B%86&sort=pass_rate&asc=0
+
+广搜：找未访问的节点开始广搜，访问到的节点集合就是一个联通分量
+深搜：找未访问的节点开始深搜，访问到的节点集合就是一个联通分量
+并查集：刚开始有n个联通分享，随着边的加入，合并成功时联通分量-1，最后结果就是联通分量的个数
+
+#include <iostream>
+using namespace std;
+
+
+class ufset {
+	int m_far[100000];
+public:
+	void init(int n) {
+		for (int i = 1; i <= n; ++i) {
+			m_far[i] = i;
+		}
+	};
+	int Find(int a) {
+    int a_bk = a;
+		while (m_far[a] != a) {
+			a = m_far[a];
+		}
+    // 注意每次找到根节点，更新节点指向根节点，这样下次查找就会快很多
+    m_far[a_bk] = a;
+		return a;
+	};
+	bool Union(int a, int b) {
+		int p_a = Find(a);
+		int p_b = Find(b);
+		if (p_a == p_b) {
+			return false;
+		}
+		m_far[p_a] = p_b;
+		return true;
+	};
+
+};
+int main()
+{
+	int n, m;
+	cin >> n >> m;
+	int count = n;
+	ufset s;
+	s.init(n);
+	for (int i = 0; i < m; ++i) {
+		int from, to;
+		cin >> from >> to;
+		if (s.Union(from, to)) {
+			count--;
+		}
+	}
+	cout << count << endl;
+	return 0;
+}
