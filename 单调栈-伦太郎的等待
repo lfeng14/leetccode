@@ -1,0 +1,28 @@
+// https://www.lanqiao.cn/problems/4495/learning/?page=1&first_category_id=1&tags=%E5%8D%95%E8%B0%83%E6%A0%88&tag_relation=intersection&sort=pass_rate&asc=0
+
+#include <iostream>
+#include <stack>
+using namespace std;
+int main()
+{
+	int studentheigh[100001];
+	int n;
+	cin >> n;
+	for (int i = 1; i <= n; ++i) {
+		cin >> studentheigh[i];
+	}
+	stack<int> s;
+	s.push(0);
+	// 加入201上限，主要是为了方便处理;
+	studentheigh[0] = 201;
+	int ans = 0;
+	for (int i = 1; i <= n; ++i) {
+		while (studentheigh[s.top()] < studentheigh[i]) {
+			s.pop();
+		}
+		ans += i - s.top() - 1;
+		s.push(i);
+	}
+	cout << ans << endl;
+	return 0;
+}
