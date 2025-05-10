@@ -1,0 +1,54 @@
+// https://www.lanqiao.cn/problems/17152/learning/?page=1&first_category_id=1&tags=%E5%8D%95%E8%B0%83%E6%A0%88&tag_relation=intersection&sort=pass_rate&asc=0
+
+#include <iostream>
+#include <stack>
+#include <vector>
+using namespace std;
+int house[700001];
+int main()
+{
+	int n;
+	cin >> n;
+	for (int i = 0; i < n; ++i) {
+		cin >> house[i];
+	}
+	stack<int> s;
+	vector<int> lans(n);
+	for (int i = 0; i < n; ++i) {
+		while (s.size() > 0 && house[s.top()] >= house[i]) {
+			s.pop();
+		}
+		if (s.size() > 0) {
+			lans[i] = s.top();
+		} else {
+      // 注意这里，如果没有小于的，那说明边界在数组外
+			lans[i] = -1;
+		}
+		s.push(i);
+	}
+	vector<int> rans(n);
+	stack<int> rs;
+	for (int i = n-1; i >= 0; --i) {
+		while (rs.size() > 0 && house[rs.top()] >= house[i]) {
+			rs.pop();
+		}
+		if (rs.size() > 0) {
+			rans[i] = rs.top();
+		}
+		else {
+      // 注意这里，如果没有小于的，那说明边界在数组外
+			rans[i] = n;
+		}
+		rs.push(i);
+	}
+  
+	long long maxv = 0;
+	for (int i = 0; i < n; ++i) {
+		long long L = lans[i] + 1;
+		long long R = rans[i] - 1;
+    // 有个乘法会导致超过int32，所以maxv使用long long类型
+		maxv = max(maxv, (R - L + 1) * house[i]);
+	}
+	cout << maxv<< endl;
+	return 0;
+}
