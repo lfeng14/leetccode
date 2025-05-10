@@ -1,0 +1,49 @@
+// https://www.lanqiao.cn/problems/1142/learning/?page=1&first_category_id=1&tags=%E5%8D%95%E8%B0%83%E6%A0%88&tag_relation=intersection&sort=pass_rate&asc=0
+
+#include <iostream>
+#include <stack>
+#include <vector>
+using namespace std;
+int house[700001];
+int main()
+{
+	int n;
+	cin >> n;
+
+	for (int i = 1; i <= n; ++i) {
+		cin >> house[i];
+	}
+	stack<int> s;
+	for (int i = 1; i <= n; ++i) {
+		while (s.size() > 0 && house[s.top()] <= house[i]) {
+			s.pop();
+		}
+		if (s.size()) {
+			cout << s.top() << " ";
+		} else {
+			cout << -1 << " ";
+		}
+		s.push(i);
+	}
+	cout << endl; 
+	vector<int> ans;
+	stack<int> rs;
+	for (int i = n; i >= 1; --i) {
+		while (rs.size() > 0 && house[rs.top()] <= house[i]) {
+			rs.pop();
+		}
+		if (rs.size()) {
+			ans.push_back(rs.top());
+		}
+		else {
+			ans.push_back(-1);
+		}
+		rs.push(i);
+	}
+// 逆序打印
+	for (int i = ans.size() - 1; i >= 0; --i) {
+		cout << ans[i] << " ";
+	}
+	cout << endl;
+	return 0;
+}
