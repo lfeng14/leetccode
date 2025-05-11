@@ -1,5 +1,6 @@
 // https://www.luogu.com.cn/problem/P1886
 // 注意出队的方式有区别，超出窗口范围的元素从队首出队；小于或者大于的元素从队尾出队；
+
 #include <iostream>
 #include <stack>
 #include <vector>
@@ -27,12 +28,7 @@ int main()
 		}
 		q.push_back(i);
 		if (i + 1 >= k) {
-			if (q.size() > 0) {
-				cout << a[q.front()] << " ";
-			}
-			else {
-				cout << -1 << " ";
-			}
+			cout << a[q.front()] << " ";
 		}
 	}
 	cout << endl;
@@ -51,12 +47,7 @@ int main()
 		}
 		q.push_back(i);
 		if (i + 1 >= k) {
-			if (q.size() > 0) {
-				cout << a[q.front()] << " ";
-			}
-			else {
-				cout << -1 << " ";
-			}
+			cout << a[q.front()] << " ";
 		}
 	}
 	return 0;
