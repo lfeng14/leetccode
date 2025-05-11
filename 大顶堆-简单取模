@@ -1,0 +1,34 @@
+// https://www.lanqiao.cn/problems/3433/learning/?page=1&first_category_id=1&tags=%E5%A0%86&sort=pass_rate&asc=0
+
+#include <iostream>
+#include <queue>
+using namespace std;
+int main()
+{
+	int na[100000];
+	int ka[100000];
+	int n, k;
+	cin >> n >> k;
+	priority_queue<int> q;
+// 老生常谈的数据范围
+	long long ans = 0;
+	for (int i = 0; i < n; ++i) {
+		int v;
+		cin >> v;
+		q.push(v);
+		ans += v;
+	}
+	for (int i = 0; i < k; ++i) {
+		int v;
+		cin >> v;
+		while (q.top() >= v) {
+			long long vv = q.top();
+			q.pop();
+			long long vvNew = vv % v;
+			q.push(vvNew);
+			ans -= vv - vvNew;
+		}
+		cout << ans << " ";
+	}
+	return 0;
+}
