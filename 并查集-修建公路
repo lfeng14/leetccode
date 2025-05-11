@@ -1,0 +1,78 @@
+// https://www.lanqiao.cn/problems/1124/learning/?page=1&first_category_id=1&tags=Kruskal&tag_relation=intersection&sort=students_count&asc=0
+
+#include <iostream>
+#include <queue>
+#include <algorithm>
+using namespace std;
+
+class edge {
+public:
+	int u, v, w;
+	edge(int u_t, int v_t, int w_t): u(u_t), v(v_t), w(w_t) {}
+	edge(): u(0), v(0), w(0) {}
+	bool operator <(const edge& e) {
+		return w < e.w;
+	}
+};
+class union_t {
+	int u[100001];
+public:
+	union_t(int n) {
+		for (int i = 0; i <= n; ++i) {
+			u[i] = i;
+		}
+	}
+	int find(int a) {
+		int orin = a;
+		while (u[a] != a) {
+			a = u[a];
+		}
+		u[orin] = a;
+		return u[orin];
+	};
+	int merge(int a, int b) {
+		int a1 = find(a);
+		int b1 = find(b);
+		if (a1 == b1) {
+			return -1;
+		}
+  // 并查集这里容易出错
+  // 正确写法
+		u[a1] = b1;
+  // 错误写法
+    // u[a] = b1;
+		return b1;
+	}
+};
+int main()
+{
+	int n, m;
+	cin >> n >> m;
+	edge e[300001] = {};
+	for (int i = 0; i < m; ++i) {
+		int u, v, w;
+		cin >> u >> v >> w;
+		e[i] = edge(u, v, w);
+	}
+	sort(e, e + m);
+	int countedge = 0;
+	long long comsume = 0;
+	union_t u(n);
+	for (int i = 0; i < m; ++i) {
+		if (u.find(e[i].u) != u.find(e[i].v)) {
+			countedge++;
+			u.merge(e[i].u, e[i].v);
+			comsume += e[i].w;
+			if (countedge + 1 >= n) {
+				break;
+			}
+		}
+	}
+	if (countedge + 1 >= n) {
+		cout << comsume << endl;
+	}
+	else {
+		cout << -1 << endl;
+	}
+	return 0;
+}
