@@ -1,0 +1,63 @@
+// https://www.luogu.com.cn/problem/P1886
+// 注意出队的方式有区别，超出窗口范围的元素从队首出队；小于或者大于的元素从队尾出队；
+#include <iostream>
+#include <stack>
+#include <vector>
+// 注意使用双端队列
+#include <deque>
+using namespace std;
+int a[1000000];
+int main()
+{
+	int n, k;
+	cin >> n >> k;
+	for (int i = 0; i < n; ++i) {
+		cin >> a[i];
+	}
+	deque<int> q;
+	// 求最小值
+	for (int i = 0; i < n; ++i) {
+		// 超过窗口范围出队
+		while (q.size() > 0 && ((i - q.front() + 1 > k))) {
+			q.pop_front();
+		}
+		// 就近大于a[i]出队
+		while (q.size() > 0 && (a[q.back()] >= a[i])) {
+			q.pop_back();
+		}
+		q.push_back(i);
+		if (i + 1 >= k) {
+			if (q.size() > 0) {
+				cout << a[q.front()] << " ";
+			}
+			else {
+				cout << -1 << " ";
+			}
+		}
+	}
+	cout << endl;
+	while (q.size()) {
+		q.pop_back();
+	}
+	// 求最大值
+	for (int i = 0; i < n; ++i) {
+		// 超过窗口范围出队
+		while (q.size() > 0 && ((i - q.front() + 1 > k))) {
+			q.pop_front();
+		}
+		// 就近小于a[i]出队
+		while (q.size() > 0 && (a[q.back()]  <= a[i])) {
+			q.pop_back();
+		}
+		q.push_back(i);
+		if (i + 1 >= k) {
+			if (q.size() > 0) {
+				cout << a[q.front()] << " ";
+			}
+			else {
+				cout << -1 << " ";
+			}
+		}
+	}
+	return 0;
+}
