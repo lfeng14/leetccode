@@ -1,0 +1,76 @@
+// https://www.luogu.com.cn/problem/P3368
+
+本题与前面不同的是区间更新单点求值；
+所以数组记录的是差分数组的前缀和，前缀和本身就是树状数组的功能；
+只要加上差分数值即可；
+
+// https://www.luogu.com.cn/problem/P3374
+// 树状数组编号必须从1开始，因为需要计算lowbit
+
+#include <iostream>
+#include <queue>
+#include <algorithm>
+#include <cstring>
+using namespace std;
+// 为了单点求值，所以数组为差分数组的前缀和
+class fentree {
+	// 也可以直接写long long m_tree[500001];
+	vector<long long> m_tree;
+public:
+	fentree(int n) : m_tree(n + 1, 0) {
+	};
+	void update(int i, int v) {
+		// 注意这里是n + 1大小，所以小于号
+		while (i < m_tree.size()) {
+			m_tree[i] += v;
+			i += (-i) & i;
+		}
+	};
+	void updateIndex(int i, int j, int v) {
+		update(i, v);
+		update(j + 1, -v);
+	}
+	long long query(int v) {
+		long long sum = 0;
+		// 树状数组必须从1开始
+		while (v > 0) {
+			sum += m_tree[v];
+			v -= (-v) & v;
+		}
+		return sum;
+	};
+
+};
+int main()
+{
+//5 5
+//1 5 4 2 3
+//1 2 4 2
+//2 3
+//1 1 5 - 1
+//1 3 5 7
+//2 4
+	int n, k;
+	cin >> n >> k;
+	fentree ft(n);
+	for (int i = 1; i <= n; ++i) {
+		int v;
+		cin >> v;
+		ft.updateIndex(i,i, v);
+	}
+	for (int i = 0; i < k; ++i) {
+		int op;
+		cin >> op;
+		if (op == 1) {
+			int l,r, x;
+			cin >> l >> r >> x;
+			ft.updateIndex(l, r, x);
+		}
+		else if (op == 2) {
+			int l;
+			cin >> l;
+			cout << ft.query(l) << endl;
+		}
+	}
+	return 0;
+}
