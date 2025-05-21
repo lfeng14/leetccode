@@ -1,4 +1,4 @@
-// https://www.luogu.com.cn/problem/B3862
+https://www.luogu.com.cn/problem/B3862
 
 // 栈深度超过512M
 #include <iostream>

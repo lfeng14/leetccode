@@ -1,4 +1,4 @@
-// https://www.lanqiao.cn/problems/19875/learning/?page=1&first_category_id=1&tags=%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84&tag_relation=intersection&sort=students_count&asc=0
+https://www.lanqiao.cn/problems/19875/learning/?page=1&first_category_id=1&tags=%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84&tag_relation=intersection&sort=students_count&asc=0
 // 树状数组编号必须从1开始，因为需要计算lowbit
 
 #include <iostream>

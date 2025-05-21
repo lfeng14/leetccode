@@ -1,4 +1,4 @@
-// https://leetcode.cn/problems/number-of-ways-to-arrive-at-destination/description/
+https://leetcode.cn/problems/number-of-ways-to-arrive-at-destination/description/
 // dijkstra
 
 class Solution {

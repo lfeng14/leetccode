@@ -1,10 +1,10 @@
-// https://www.luogu.com.cn/problem/P3368
+https://www.luogu.com.cn/problem/P3368
 
 本题与前面不同的是区间更新单点求值；
 所以数组记录的是差分数组的前缀和，前缀和本身就是树状数组的功能；
 只要加上差分数值即可；
 
-// https://www.luogu.com.cn/problem/P3374
+https://www.luogu.com.cn/problem/P3374
 // 树状数组编号必须从1开始，因为需要计算lowbit
 
 #include <iostream>

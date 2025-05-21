@@ -1,4 +1,4 @@
-// https://www.lanqiao.cn/problems/10036/learning/?page=1&first_category_id=1&tags=%E5%B9%B6%E6%9F%A5%E9%9B%86&sort=pass_rate&asc=0
+https://www.lanqiao.cn/problems/10036/learning/?page=1&first_category_id=1&tags=%E5%B9%B6%E6%9F%A5%E9%9B%86&sort=pass_rate&asc=0
 
 广搜：找未访问的节点开始广搜，访问到的节点集合就是一个联通分量
 深搜：找未访问的节点开始深搜，访问到的节点集合就是一个联通分量

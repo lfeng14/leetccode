@@ -1,4 +1,4 @@
-// https://www.lanqiao.cn/problems/1175/learning/?page=1
+https://www.lanqiao.cn/problems/1175/learning/?page=1
 // 通过公式推导，dp[i][j - volume[i]] + value[i] 表示第i个至少放一个，将k = 1到cap/w[i]通过公式推导浓缩成这个式子
 #include <iostream>
 #include <cstring>

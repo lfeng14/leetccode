@@ -1,4 +1,4 @@
-// https://www.lanqiao.cn/problems/1205/learning/?page=1&first_category_id=1&tags=ST%E8%A1%A8&tag_relation=intersection&sort=students_count&asc=0
+https://www.lanqiao.cn/problems/1205/learning/?page=1&first_category_id=1&tags=ST%E8%A1%A8&tag_relation=intersection&sort=students_count&asc=0
 
 // 算最值与前缀和有个区别，[1,99]求区间最值，那么求[1,64]、[36，99]这两个区间的最值，再求个max最后也能得出答案；
 // ST表其实就是利用动态规划，算出dp[k][i]，第i个元素(可以从0开始)开始的2^k个元素最值；st[j-1][i]与st[j-1][i + (1<<(j-1))]
@@ -9,7 +9,7 @@
 using namespace std;
 
 // RMQ模板
-// https://www.luogu.com.cn/problem/P3865
+https://www.luogu.com.cn/problem/P3865
 // 静态区间最值问题
 
 template<typename T, typename Compare>

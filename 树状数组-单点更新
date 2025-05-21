@@ -1,4 +1,4 @@
-// https://www.luogu.com.cn/problem/P3374
+https://www.luogu.com.cn/problem/P3374
 // 树状数组编号必须从1开始，因为需要计算lowbit
 
 #include <iostream>

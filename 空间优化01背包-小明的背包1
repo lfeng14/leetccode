@@ -1,4 +1,4 @@
-// https://www.lanqiao.cn/problems/1174/learning/?page=1&first_category_id=1&name=%E5%B0%8F%E6%98%8E%E7%9A%84
+https://www.lanqiao.cn/problems/1174/learning/?page=1&first_category_id=1&name=%E5%B0%8F%E6%98%8E%E7%9A%84
 
 // 思路：当前值依赖上一行j左侧的值，那么我如果从j -> 0也就是逆序枚举，这样就可是将二维降为1维。
 #include <iostream>
