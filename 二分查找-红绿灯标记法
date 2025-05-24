@@ -1,0 +1,24 @@
+// https://leetcode.cn/problems/binary-search/description/
+
+将素组区分为红色(< target), 绿色(>= target);
+为了保证一定有红色和绿色，所以拓展数组，增加虚拟red = -1; green = nums.size();
+当nums[mid] >= target, green = mid;
+当nums[mid] < target, red = mid;
+最后green还是 >= target; 有个另外，虚拟节点做判断green == nums.size(); 根据题意返回 等于还是 >=，还是 < ;
+while循环条件语句，red + 1 < green,也就是红色与绿色两个指针，紧挨着停止循环；
+
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        int r = -1, g = nums.size();
+        while (r + 1 < g) {
+            int mid  = (r + g);
+            if (nums[mid] >= target) {
+                g = mid;
+            } else {
+                r = mid;
+            }
+        }
+        return g == nums.size() ? -1: (nums[g] == target ? g:-1);
+    }
+};
