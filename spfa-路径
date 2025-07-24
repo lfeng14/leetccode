@@ -49,6 +49,7 @@ void updateedges(int u) {
 		}
 		if (d[u] + w < d[v]) {
 			d[v] = d[u] + w;
+                        // SPFA可以反复入队，dijkstra不会反复入队
 			heap.push(dist(v, d[v]));
 			inqueue[v] = true;
 		}
